@@ -1,0 +1,4 @@
+﻿GET http://localhost:7026/api/Function1
+
+###
+POST http://localhost:7026/api/Function1
