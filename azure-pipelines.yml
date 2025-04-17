@@ -7,8 +7,7 @@ trigger:
 - main
 
 variables:
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: $(subscription)
+
 
   # Function app name
   functionAppName: 'AzurePlayGroundFunction'
@@ -32,7 +31,7 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
-    - script: echo Sub '$(azureSubscription)'
+    - script: echo Sub '$(serviceConnection)'
 
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -74,7 +73,7 @@ stages:
           - task: AzureFunctionApp@2
             displayName: 'Azure functions app deploy'
             inputs:
-              connectedServiceNameARM: '$(azureSubscription)'
+              connectedServiceNameARM: '$(serviceConnection)'
               appType: functionApp
               appName: $(functionAppName)
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
