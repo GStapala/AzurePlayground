@@ -8,7 +8,7 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: $(subscruption)
+  azureSubscription: $(subscription)
 
   # Function app name
   functionAppName: 'AzurePlayGroundFunction'
@@ -18,6 +18,8 @@ variables:
 
   # Working Directory
   workingDirectory: 'AzurePlayGround'
+
+
 
 stages:
 - stage: Build
@@ -30,6 +32,8 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+    - script: echo Sub '$(azureSubscription)'
+
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
