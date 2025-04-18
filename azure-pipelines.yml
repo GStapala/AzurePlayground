@@ -6,6 +6,8 @@
 trigger:
 - main
 
+pool: personalPC
+
 variables:
   # Function app name
   functionAppName: 'AzurePlayGroundFunction'
