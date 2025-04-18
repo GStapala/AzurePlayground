@@ -8,7 +8,9 @@ trigger:
 
 pool: personalPC
 
+
 variables:
+
   # Function app name
   functionAppName: 'AzurePlayGroundFunction'
 
@@ -23,5 +25,55 @@ stages:
   displayName: Build stage
 
   jobs:
-  - job: Temp
-    dependsOn : ''
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+    - script: echo Sub '$(serviceConnection)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: |
+          $(workingDirectory)/*.csproj
+        arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: drop
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    environment: 'development'
+    pool:
+      vmImage: $(vmImageName)
+
+    strategy:
+      runOnce:
+        deploy:
+
+          steps:
+          - task: AzureFunctionApp@2
+            displayName: 'Azure functions app deploy'
+            inputs:
+              connectedServiceNameARM: '$(serviceConnection)'
+              appType: functionApp
+              appName: $(functionAppName)
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
