@@ -5,12 +5,15 @@
 
 trigger:
 - main
+pr:
+ branches:
+   include:
+     - main
 
 pool:
   name: $(poolAgentName)
 
 variables:
-
   # Function app name
   functionAppName: 'AzurePlayGroundFunction'
 
