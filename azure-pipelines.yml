@@ -6,7 +6,7 @@
 trigger:
 - main
 
-pool: MopPc
+pool: personalPC
 
 variables:
   # Function app name
