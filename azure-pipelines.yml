@@ -5,20 +5,20 @@
 
 trigger:
 - main
+pr:
+ branches:
+   include:
+     - main
+
+pool:
+  name: $(poolAgentName)
 
 variables:
-
-
   # Function app name
   functionAppName: 'AzurePlayGroundFunction'
 
-  # Agent VM image name
-  vmImageName: 'windows-latest'
-
   # Working Directory
   workingDirectory: 'AzurePlayGround'
-
-
 
 stages:
 - stage: Build
@@ -27,8 +27,6 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool:
-      vmImage: $(vmImageName)
 
     steps:
     - script: echo Sub '$(serviceConnection)'
@@ -62,8 +60,6 @@ stages:
   - deployment: Deploy
     displayName: Deploy
     environment: 'development'
-    pool:
-      vmImage: $(vmImageName)
 
     strategy:
       runOnce:
