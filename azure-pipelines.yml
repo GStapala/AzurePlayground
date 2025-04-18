@@ -6,7 +6,8 @@
 trigger:
 - main
 
-pool: $(poolAgentName)
+pool:
+  name: $(poolAgentName)
 
 variables:
 
