@@ -6,16 +6,10 @@
 trigger:
 - main
 
-pool: personalPC
-
-
 variables:
 
   # Function app name
   functionAppName: 'AzurePlayGroundFunction'
-
-  # Agent VM image name
-  vmImageName: 'windows-latest'
 
   # Working Directory
   workingDirectory: 'AzurePlayGround'
@@ -28,7 +22,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+      vmImage: $(poolAgentName)
 
     steps:
     - script: echo Sub '$(serviceConnection)'
