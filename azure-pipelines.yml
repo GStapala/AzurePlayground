@@ -22,6 +22,7 @@ stages:
 
   jobs:
   - job: Temp
+    dependsOn : ''
   - job: Build
     dependsOn : 'Temp'
     displayName: Build
