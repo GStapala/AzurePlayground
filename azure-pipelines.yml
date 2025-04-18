@@ -7,8 +7,6 @@ trigger:
 - main
 
 variables:
-
-
   # Function app name
   functionAppName: 'AzurePlayGroundFunction'
 
@@ -18,21 +16,19 @@ variables:
   # Working Directory
   workingDirectory: 'AzurePlayGround'
 
-
-
 stages:
 - stage: Build
   displayName: Build stage
 
   jobs:
+  - job: Temp
   - job: Build
+    dependsOn : 'Temp'
     displayName: Build
     pool:
       vmImage: $(vmImageName)
 
     steps:
-    - script: echo Sub '$(serviceConnection)'
-
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
