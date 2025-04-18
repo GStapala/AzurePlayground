@@ -6,6 +6,8 @@
 trigger:
 - main
 
+pool: $(poolAgentName)
+
 variables:
 
   # Function app name
@@ -21,8 +23,6 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool:
-      vmImage: $(poolAgentName)
 
     steps:
     - script: echo Sub '$(serviceConnection)'
